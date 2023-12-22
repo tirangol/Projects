@@ -7,13 +7,13 @@ Created in Java, using object-oriented programming, following clean architecture
 The project's base functionality is complete and is accessible via a command-line interface made by me. Due to time constraints, the GUI, which was also made by me, was incomplete. Here are all the GUI menus:
 
 <p align="center">
-<img src="gifs/user.gif" width="500px">
+<img src="gifs/user.gif" width="800px">
 </p>
 
 Separate menu for admins. There is not much of a point of banning/unbanning; this is a relic of this project's requirements, which required we build off an initial user/admin system.
 
 <p align="center">
-<img src="gifs/admin.gif" width="500px">
+<img src="gifs/admin.gif" width="800px">
 </p>
 
 To run the program in the command-line interface (which has access to all features), run `src/Main.java`. If this is the first time opening this project, run this file to create an admin account first.
