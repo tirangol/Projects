@@ -21,8 +21,6 @@ This program supports:
 <img src="gifs/c2.gif" width="500px">
 </p>
 
-The black bottom-right part is the result of my screen recorder, not the program.
-
 ## Instructions
 
 Upon running `main.py`, a command-line interface will allow the following commands:
