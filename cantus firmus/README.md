@@ -15,10 +15,10 @@ This program supports:
 - Reading key signatures and formatting notes according to them
 
 <p align="center">
-<img src="gifs/c1.gif" width="500px">
+<img src="gifs/c1.gif" width="800px">
 </p>
 <p align="center">
-<img src="gifs/c2.gif" width="500px">
+<img src="gifs/c2.gif" width="800px">
 </p>
 
 ## Instructions
