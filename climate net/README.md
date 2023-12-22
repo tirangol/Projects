@@ -31,6 +31,16 @@ Currently, only the minimum functionality has been implemented. There are a lot 
 - Statistics about the land - elevation distribution, percentage of land/water cover
 - For a pixel, finding similar-climate cities in the real-world
 
+The temperature/precipitation data originated from https://www.worldclim.org/data/worldclim21.html
+
+The elevation data originated from http://www.viewfinderpanoramas.org/dem3.html
+
+The retrograde data originated from https://www.wdc-climate.de/ui/entry?acronym=DKRZ_LTA_110_ds00001
+
+Data for the shape of lakes and inland bodies of waters came from an asset in GProjector.
+
+## Instructions
+
 To get started, run `gui.py` and go to the web address specified by the console after it starts running.
 
 If you just want to use the Python part, you'll need two `180 x 360` numpy arrays as your inputs - one is your elevation map (a float array) and the other is the land map (a boolean area where 0/1 = water/land). Run the code in `model.py`, then the code in `preprocessing.py`, then the following lines:
