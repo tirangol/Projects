@@ -16,7 +16,7 @@ Python was used for the machine learning component - Pillow, Scipy and Numpy for
 <img src="gifs/results.gif" width="500px">
 </p>
 
-Currently, only the base functionality has been implemented; there a lot of things to add, such as:
+Currently, only the minimum functionality has been implemented. There are a lot of things I'm working on, such as:
 
 - Optimizing the preprocessing speed (which is far too slow)
 - More realistic random terrain generation
@@ -30,3 +30,19 @@ Currently, only the base functionality has been implemented; there a lot of thin
 - Generating temperature-precipitation plots of individual pixels
 - Statistics about the land - elevation distribution, percentage of land/water cover
 - For a pixel, finding similar-climate cities in the real-world
+
+To get started, run `gui.py` and go to the web address specified by the console after it starts running.
+
+If you just want to use the Python part, you'll need two `180 x 360` numpy arrays as your inputs - one is your elevation map (a float array) and the other is the land map (a boolean area where 0/1 = water/land). Run the code in `model.py`, then the code in `preprocessing.py`, then the following lines:
+
+```
+preprocess(elevation, land)                   # where elevation, land are your two numpy arrays
+prediction = get_prediction(climate_net)
+
+temperature = unflatten_data(prediction[:, :12])
+precipitation = unflatten_data(prediction[:, 12:])
+koppen = get_koppen(temperature, precipitation, land)
+trewartha = get_trewartha(temperature, precipitation, elevation, land)
+```
+
+Of the last four variables, the first two are numpy arrays of size `12 x 180 x 360`, while the last two are of size `180 x 360`. Use them however you wish.
