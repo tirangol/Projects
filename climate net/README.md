@@ -2,11 +2,13 @@
 
 A work-in-progress app that uses a neural network to predict the climate of Earth-like planets, intended as a fast & high-resolution worldbuilding tool for generating realistic climates. Earth-like in this context means matching modern-era Earth in every property except for the elevation map.
 
+The model is very naive - it only considers elevation and the land/water boundary, ignoring other factors like vegetation, the chemical makeup of the atmosphere, or the ocean bathymetry.
+
 It supports inputs in the form of images (.png, .jpg, .tif), text (eg. `[[1, 2, 3], [4, 5, 6]]`), or randomly generated terrain, and contains a editor that can perform limited elevation-editing operations.
 
 Outputs come in the form of monthly temperature, monthly precipitation, and climate classification maps (currently supports Koppen and Trewartha).
 
-Python was used for the machine learning component - Pillow, Scipy and Numpy for the data processing, Pytorch for the neural network and training process, and Flask for the web part. HTML, CSS, and Javascript were used to build the website as well as the editor.
+Python was used for the machine learning component - Pillow, Scipy and Numpy for the data processing, Pytorch for the neural network and training process, and Flask for the web part. HTML, CSS, and Javascript were used to build the website as well as the editor. I'm using additional Javascript libraries to handle TIF images as well as image uploading/exporting.
 
 <p align="center">
 <img src="gifs/editing.gif" width="1000px">
@@ -31,11 +33,15 @@ Currently, only the minimum functionality has been implemented. There are a lot 
 - Statistics about the land - elevation distribution, percentage of land/water cover
 - For a pixel, finding similar-climate cities in the real-world
 
-The temperature/precipitation data originated from https://www.worldclim.org/data/worldclim21.html
+The webpage has only been tested in Chrome and Edge on Windows. If something doesn't display right... welp.
+
+## Data
+
+The temperature/precipitation data originated from https://www.worldclim.org/data/worldclim21.html (data from 1970 to 2000)
 
 The elevation data originated from http://www.viewfinderpanoramas.org/dem3.html
 
-The retrograde data originated from https://www.wdc-climate.de/ui/entry?acronym=DKRZ_LTA_110_ds00001
+The retrograde data originated from https://www.wdc-climate.de/ui/entry?acronym=DKRZ_LTA_110_ds00001 (a climate simulation)
 
 Data for the shape of lakes and inland bodies of waters came from an asset in GProjector.
 
