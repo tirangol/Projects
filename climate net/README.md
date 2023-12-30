@@ -22,15 +22,11 @@ Python was used for the machine learning component - Pillow, Scipy and Numpy for
 <img src="gifs/part 3.gif" width="1000px">
 </p>
 
-Currently, only the minimum functionality has been implemented. There are a lot of things I'm working on, such as:
+There are a lot of things I'm still not satisfied with and am working on, such as:
 
 - Optimizing the preprocessing speed (which is far too slow)
-- More realistic random terrain generation
-- More options for elevation colour scale
-- Global elevation offsetting (rather than just changing the water level)
 - GIF, PNG, and text exporting of results
 - More colour schemes for results
-- A colour bar for temperature/precipitation and legend for climate classifications
 - Add Thornthwaite climate classification system
 - Optional logarithmic scale for precipitation
 - Generating temperature-precipitation plots of individual pixels
