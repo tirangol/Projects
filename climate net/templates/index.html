@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+    <title>Climate Net</title>
+	
+	<!--
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Flamenco:wght@400;700&family=GFS+Neohellenic:ital,wght@0,400;0,700;1,400&family=Federo&family=Carlito:ital@1&family=Forum:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../static/index.css">
+
+	<script src="../static/jquery.js"></script>
+	<script src="../static/reimg.js"></script>
+	<script src="../static/canvastotiff.js"></script>
+	<script src="../static/UTIF.js"></script>
+	<script src="../static/index.js"></script>
+	-->
+	
+	<!--
+	https://github.com/gillyb/reimg
+	https://github.com/motiz88/canvas-to-tiff
+	-->
+	
+	<!---->
+	<link rel='stylesheet' href="{{ url_for('static', filename='index.css') }}">
+	<script type='text/javascript' src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type='text/javascript' src="{{ url_for('static', filename='reimg.js') }}"></script>
+	<script type='text/javascript' src="{{ url_for('static', filename='canvastotiff.js') }}"></script>
+	<script type='text/javascript' src="{{ url_for('static', filename='UTIF.js') }}"></script>
+	<script type='text/javascript' src="{{ url_for('static', filename='index.js') }}"></script>
+	<!---->
+</head>
+
+<body onload='init()'>
+	<div id='title_block'>
+		<a href='https://github.com/tirangol/Projects/tree/main/climate%20net' target='_blank'>
+			<h1><span id='h1_colour'>Climate</span> Net <span id='subtitle'>by Richard Yin</span></h1>
+			<h2>Neural Networks for Earth-like Climate Prediction</h2>
+		</a>
+	</div>
+	
+	<div id='map_block'>
+		<canvas id='map_canvas' width='360px' height='180px' oncontextmenu='return false;' onmousemove='onCanvasMouseScroll(event)' onmouseleave="onCanvasMouseExit()" onmousedown='brushDown(event)' onmouseup='brushUp()'></canvas>
+		<div id='map_canvas_caption'>
+			<h4>0 m</h4>
+			<p>(0° N, 0° W)</p>
+		</div>
+		<div id='map_canvas_hover_pixel'></div>
+		<div id='map_canvas_brush_holder'>
+			<div id='map_canvas_brush'></div>
+			<div id='map_canvas_brush_looped'></div>
+		</div>
+	</div>
+	
+	<div id='colour_bar_block'>
+		<canvas id='colour_bar_canvas' width='50px' height='500px'></canvas>
+		<div id='colour_bar_text'></div>
+	</div>
+	
+	<div id='sidebar_block'>
+		<div id='part_1' class='sidebar_part'>
+			<h3>Part 1 – <span>Base Map</span></h3>
+			<p>Choose an equirectangular input map.</p>
+			
+			<span id='map_input_file_tab' class='tab map_input_active_tab' onclick='mapInputFile()'>Upload Image</span><span id='map_input_text_tab' class='tab' onclick='mapInputText()'>Paste Text</span><span id='map_input_preset_tab' class='tab' onclick='mapInputPreset()'>Preset</span>
+			<div id='map_input'>
+				<div id='map_input_file'>
+					<p>Grayscale is interpreted as elevation. Colour is interpreted as water.</p>
+					<input type='file' id='map_input_file_upload' onchange='inputFile()' accept='image/*'></input>
+					<p id='map_input_file_error'></p>
+				</div>
+				<div id='map_input_text'>
+					<p>Paste an elevation matrix in meters.</p>
+					<input type='text' id='map_input_text_upload' placeholder='e.g. [[a, b, c, ...], [d, e, f, ...], ...]' onfocusout='inputText()'></input>
+					<p id='map_input_text_error'></p>
+				</div>
+				<div id='map_input_preset'>
+					<p>Randomly generate terrain or load Earth.</p>
+					<input type='button' value='Earth' onclick='inputPreset("Earth")'></input>
+					<input type='button' value='Retrograde Earth' onclick='inputPreset("Retrograde Earth")'></input>
+					<input type='button' value='Random' onclick='inputPreset("Random")'></input>
+				</div>
+			</div>
+			<br>
+			<input type='text' class='part_1_text' id='min_elevation' value="0m" onfocusout='manualNumber("min_elevation")'></input>
+			<label for='min_elevation' id='min_elevation_label' onmouseenter='enterLabel("min_elevation")' onmouseleave='leaveLabel()'>Minimum scaled elevation</label>
+			<br>
+			<input type='text' class='part_1_text' id='max_elevation' value="6097m" onfocusout='manualNumber("max_elevation")'></input>
+			<label for='max_elevation' id='max_elevation_label' onmouseenter='enterLabel("max_elevation")' onmouseleave='leaveLabel()'>Maximum scaled elevation</label>
+			<br>
+			<input type='text' class='part_1_text' id='elevation_offset' value="0m" onfocusout='manualNumber("elevation_offset")'></input>
+			<label for='elevation_offset' id='elevation_offset_label' onmouseenter='enterLabel("elevation_offset")' onmouseleave='leaveLabel()'>Elevation offset</label>
+			<br>
+			<input type='text' class='part_1_text' id='longitude_offset' value="0m" onfocusout='manualNumber("longitude_offset")'></input>
+			<label for='longitude_offset' id='longitude_offset_label' onmouseenter='enterLabel("longitude_offset")' onmouseleave='leaveLabel()'>Longitude offset</label>
+			<br>
+			<input type='checkbox' id='invert_image_shades' oninput='toggleInvertImageShades()'></input>
+			<label for='invert_image_shades' id='invert_image_shades_label' onmouseenter='enterLabel("invert_image_shades")' onmouseleave='leaveLabel()'>Invert image shades</label>
+			<br>
+			<input type='checkbox' checked id='elevation_shade' oninput='toggleElevationShading()'></input>
+			<label for='elevation_shade' id='elevation_shade_label' onmouseenter='enterLabel("elevation_shade")' onmouseleave='leaveLabel()'>Radical elevation shading</label>
+			<br>
+			<div id='next' onclick='part2()' class='unselectable colour_1'>Next</div>
+		</div>
+		
+		<div id='part_2' class='sidebar_part'>
+			<h3>Part 2 – <span>Editor</span></h3>
+			<p>Tweak the elevation map with a brush.</p>
+			<div id='brush_toolkit'>
+				<table id='brush_toolkit_table'>
+					<tr>
+						<td><label for="size" id='size_label' onmouseenter='enterLabel("size")' onmouseleave='leaveLabel()'>Size</label></td>
+						<td><img src="{{ url_for('static', filename='assets/small.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/small.png' class='icon'></td> -->
+						<td><input type='range' id='size' min="1" max="360" value="5" oninput='manualBrushValue("size")'></input></td>
+						<td><img src="{{ url_for('static', filename='assets/big.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/big.png' class='icon'></td> -->
+						<td><input type='text' id='size_value' value="5px" onfocusout='manualBrushSlider("size")'></input></td>
+					</tr>
+					<tr>
+						<td><label for="hardness" id='hardness_label' onmouseenter='enterLabel("hardness")' onmouseleave='leaveLabel()'>Hardness</label></td>
+						<td><img src="{{ url_for('static', filename='assets/soft.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/soft.png' class='icon'></td> -->
+						<td><input type='range' id='hardness' min="0" max="100" value="0" oninput='manualBrushValue("hardness")'></input></td>
+						<td><img src="{{ url_for('static', filename='assets/normal.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/normal.png' class='icon'></td> -->
+						<td><input type='text' id='hardness_value' value="0%" onfocusout='manualBrushSlider("hardness")'></input></td>
+					</tr>
+					<tr>
+						<td><label for="noise" id='noise_label' onmouseenter='enterLabel("noise")' onmouseleave='leaveLabel()'>Noise</label></td>
+						<td><img src="{{ url_for('static', filename='assets/normal.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/normal.png' class='icon'></td> -->
+						<td><input type='range' id='noise' min="0" max="100" value="100" oninput='manualBrushValue("noise")'></input></td>
+						<td><img src="{{ url_for('static', filename='assets/noise.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/noise.png' class='icon'></td> -->
+						<td><input type='text' id='noise_value' value="100%" onfocusout='manualBrushSlider("noise")'></input></td>
+					</tr>
+					<tr>
+						<td><label for="distortion" id='distortion_label' onmouseenter='enterLabel("distortion")' onmouseleave='leaveLabel()'>Distortion</label></td>
+						<td><img src="{{ url_for('static', filename='assets/normal.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/normal.png' class='icon'></td> -->
+						<td><input type='range' id='distortion' min="0" max="100" value="100" oninput='manualBrushValue("distortion")'></input></td>
+						<td><img src="{{ url_for('static', filename='assets/distortion.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/distortion.png' class='icon'></td> -->
+						<td><input type='text' id='distortion_value' value="100%" onfocusout='manualBrushSlider("distortion")'></input></td>
+					</tr>
+					<tr>
+						<td><label for="elevation" id='elevation_label' onmouseenter='enterLabel("elevation")' onmouseleave='leaveLabel()'>Elevation</label></td>
+						<td><img src="{{ url_for('static', filename='assets/minus.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/minus.png' class='icon'></td> -->
+						<td><input type='range' id='elevation' min="-1500" max="1500" value="0" oninput='manualBrushValue("elevation")'></input></td>
+						<td><img src="{{ url_for('static', filename='assets/plus.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/plus.png' class='icon'></td> -->
+						<td><input type='text' id='elevation_value' value="0m" onfocusout='manualBrushSlider("elevation")'></input></td>
+					</tr>
+					<tr>
+						<td><label for="no_mask" id='no_mask_label' onmouseenter='enterLabel("no_mask")' onmouseleave='leaveLabel()'>Selection</label></td>
+						<td><img src="{{ url_for('static', filename='assets/select.png') }}" class='icon'></td>
+						<!-- <td><img src='../static/assets/select.png' class='icon'></td> -->
+						<td><input type='button' class='mask mask_active' id='no_mask' value='All' onclick='noMask()'></input> <input type='button' class='mask' id='land_mask' value='Land' onclick='landMask()'></input> <input type='button' class='mask' id='water_mask' value='Water' onclick='waterMask()'></input></td>
+					</tr>
+				</table>
+				<input type='button' id='save_state' value='Save State' onclick='saveState()'></input><input type='button' id='revert_state' value='Revert State' onclick='revertState()'></input><input type='button' id='reset' value='Reset' onclick='resetState()'></input>
+				<br>
+				<br>
+				<input type='submit' value='Predict Climate' class='colour_1' id='predict_climate' onclick='predictClimate()'></input>
+				<input type='button' id='export' class='colour_2' value='Export' onclick='enterExportMenu()'></input>
+				<div class='back colour_3' onclick='part1()'>Back</div>
+			</div>			
+		</div>
+		
+		<div id='part_3' class='sidebar_part'>
+			<h3>Part 3 – <span>Results</span></h3>
+			<p>View the neural net's predictions.</p>
+			
+			<!--
+			Include a colour legend
+			
+			Tab system
+			- 1st tab: Monthly Weather
+			    - Right-click on a point to toggle individual pixel predictions	
+				- 12-point slider across months
+				- Download current month
+				- Download GIF
+				- Download Data as Text
+			- 2nd tab: Climate Classification
+				- Koppen
+				- Trawartha
+				- Download PNG
+			-->
+			<span id='result_temperature_tab' class='tab result_active_tab' onclick='resultTemperature()'>Temperature</span><span id='result_precipitation_tab' class='tab' onclick='resultPrecipitation()'>Precipitation</span><span id='result_climate_tab' class='tab' onclick='resultClimate()'>Climate</span>
+			<div id='result'>
+				<div id='result_temperature'>
+					<p>Select a month to view monthly temperature data.</p>
+					<input type='range' id='month_range_temperature' min="1" max="12" value="1" oninput='plotTemperature();'></input>
+					
+					<span class='month month_temp jan active_month'>Jan</span>
+					<span class='month month_temp feb'>Feb</span>
+					<span class='month month_temp mar'>Mar</span>
+					<span class='month month_temp apr'>Apr</span>
+					<span class='month month_temp may'>May</span>
+					<span class='month month_temp jun'>Jun</span>
+					<span class='month month_temp jul'>Jul</span>
+					<span class='month month_temp aug'>Aug</span>
+					<span class='month month_temp sep'>Sep</span>
+					<span class='month month_temp oct'>Oct</span>
+					<span class='month month_temp nov'>Nov</span>
+					<span class='month month_temp dec'>Dec</span>
+					<br>
+				</div>
+				<div id='result_precipitation'>
+					<p>Select a month to view monthly precipitation data.</p>
+					<input type='range' id='month_range_precipitation' min="1" max="12" value="1" oninput='plotPrecipitation()'></input>
+					
+					<span class='month month_prec jan active_month'>Jan</span>
+					<span class='month month_prec feb'>Feb</span>
+					<span class='month month_prec mar'>Mar</span>
+					<span class='month month_prec apr'>Apr</span>
+					<span class='month month_prec may'>May</span>
+					<span class='month month_prec jun'>Jun</span>
+					<span class='month month_prec jul'>Jul</span>
+					<span class='month month_prec aug'>Aug</span>
+					<span class='month month_prec sep'>Sep</span>
+					<span class='month month_prec oct'>Oct</span>
+					<span class='month month_prec nov'>Nov</span>
+					<span class='month month_prec dec'>Dec</span>
+					<br>
+					</div>
+				<div id='result_climate'>
+					<p>Choose a climate classification system.</p>
+					<input type='radio' id='result_climate_koppen' name='result_climate_form' value='result_climate_koppen' oninput='plotKoppen()' checked='checked'></input>
+					<label class='result_climate_label' id='result_climate_koppen_label' for='result_climate_koppen'>Köppen-Geiger</label>
+					<br>
+					<input type='radio' id='result_climate_trewartha' name='result_climate_form' value='result_climate_trewartha' oninput='plotTrewartha()'></input>
+					<label class='result_climate_label' id='result_climate_trewartha_label' for='result_climate_trewartha'>Köppen-Trewartha</label>
+				</div>
+			</div>
+			<br>
+			<input type='button' id='download_data' class='colour_2' value='Download Data' onclick='enterDownloadMenu()'></input>
+			<div class='back colour_3' onclick='part2()'>Back</div>
+		</div>
+	</div>
+	
+	<div id='save_block'>
+		<div id='save_overlay' onclick='leaveExportMenu()'></div>
+		<div id='save'>
+			<h3>Export Map</h3>
+			<p>Download the edited elevation map. TIFF and TXT files store with higher precision than PNGs.</p>
+			<div id='png' class='export_format' onclick='downloadPNG()'><span>PNG</span> // Default image format</div>
+			<div id='tiff' class='export_format' onclick='downloadTIFF()'><span>TIFF</span> // High-resolution image format</div>
+			<div id='txt' class='export_format' onclick='downloadTXT()'><span>TXT</span> // Text format</div>
+			<p>Or save the text below somewhere:</p>
+			<textarea readonly id='copyable_txt'></textarea>
+		</div>
+		
+		<!--
+		For the current month and current selected map only
+		- Download PNG, TIF, or TXT
+		Or, for all months and current selected map
+		- Download GIF, TXT
+		-->
+	</div>
+	
+	<div id='caption_block'>
+		<span id='min_elevation_caption' class='caption'>The lowest possible elevation of the base map.</span>
+		<span id='max_elevation_caption' class='caption'>The highest possible elevation of the base map.</span>
+		<span id='elevation_offset_caption' class='caption'>This value is added to every pixel's elevation in the base map.</span>
+		<span id='longitude_offset_caption' class='caption'>Shift the entire map left/right by some amount of pixels.</span>
+		<span id='invert_image_shades_caption' class='caption'>Invert map elevation so the min/max elevation becomes the max/min elevation.</span>
+		<span id='elevation_shade_caption' class='caption'>Use a square-root based elevation shading function that increases/decreases contrast in low/high-elevation regions.</span>
+		
+		<span id='size_caption' class='caption'>Change the radius of the brush circle.</span>
+		<span id='hardness_caption' class='caption'>Change the blurriness/hardness of the brush.</span>
+		<span id='noise_caption' class='caption'>Change the noisiness of the brush texture.</span>
+		<span id='distortion_caption' class='caption'>Change the brush shape continuously to match the distortion of equirectangular projection.</span>
+		<span id='elevation_caption' class='caption'>Change what the brush affects elevation by.</span>
+		<span id='no_mask_caption' class='caption'>Optionally restrict the brush to only affect land or water.</span>
+	</div>
+</body>
+</html>
