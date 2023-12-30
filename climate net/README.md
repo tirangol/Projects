@@ -11,11 +11,15 @@ Outputs come in the form of monthly temperature, monthly precipitation, and clim
 Python was used for the machine learning component - Pillow, Scipy and Numpy for the data processing, Pytorch for the neural network and training process, and Flask for the web part. HTML, CSS, and Javascript were used to build the website as well as the editor. I'm using additional Javascript libraries to handle TIF images as well as image uploading/exporting.
 
 <p align="center">
-<img src="gifs/editing.gif" width="1000px">
+<img src="gifs/part 1.gif" width="1000px">
 </p>
 
 <p align="center">
-<img src="gifs/results.gif" width="1000px">
+<img src="gifs/part 2.gif" width="1000px">
+</p>
+
+<p align="center">
+<img src="gifs/part 3.gif" width="1000px">
 </p>
 
 Currently, only the minimum functionality has been implemented. There are a lot of things I'm working on, such as:
