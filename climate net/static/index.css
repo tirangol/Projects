@@ -6,9 +6,11 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/Carlito-Regular.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Carlito-Regular.ttf') format('truetype');
+	src: url('../static/fonts/Carlito-Regular.ttf') format('truetype');
 	*/
 }
 @font-face {
@@ -16,30 +18,36 @@
 	font-style: italic;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/Carlito-Italic.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Carlito-Italic.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Carlito-Italic.ttf') format('truetype');
+	/**/
 }
 @font-face {
 	font-family: 'Carlito';
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
+	/**/
 	src: url('fonts/Carlito-Bold.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Carlito-Bold.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Carlito-Bold.ttf') format('truetype');
+	/**/
 }
 @font-face {
 	font-family: 'Carlito';
 	font-style: italic;
 	font-weight: 700;
 	font-display: swap;
+	/**/
 	src: url('fonts/Carlito-BoldItalic.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Carlito-BoldItalic.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Carlito-BoldItalic.ttf') format('truetype');
+	/**/
 }
 
 @font-face {
@@ -47,10 +55,12 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/Federo-Regular.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Federo-Regular.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Federo-Regular.ttf') format('truetype');
+	/**/
 }
 
 @font-face {
@@ -58,20 +68,24 @@
 	font-style: normal;
 	font-weight: 300;
 	font-display: swap;
+	/**/
 	src: url('fonts/Flamenco-Light.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Flamenco-Light.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Flamenco-Light.ttf') format('truetype');
+	/**/
 }
 @font-face {
 	font-family: 'Flamenco';
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/Flamenco-Regular.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Flamenco-Regular.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Flamenco-Regular.ttf') format('truetype');
+	/**/
 }
 
 @font-face {
@@ -79,10 +93,12 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/Forum-Regular.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/Forum-Regular.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/Forum-Regular.ttf') format('truetype');
+	/**/
 }
 
 @font-face {
@@ -90,40 +106,48 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/GFSNeohellenic-Regular.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/GFSNeohellenic-Regular.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/GFSNeohellenic-Regular.ttf') format('truetype');
+	/**/
 }
 @font-face {
 	font-family: 'GFS Neohellenic';
 	font-style: italic;
 	font-weight: 400;
 	font-display: swap;
+	/**/
 	src: url('fonts/GFSNeohellenic-Italic.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/GFSNeohellenic-Italic.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/GFSNeohellenic-Italic.ttf') format('truetype');
+	/**/
 }
 @font-face {
 	font-family: 'GFS Neohellenic';
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
+	/**/
 	src: url('fonts/GFSNeohellenic-Bold.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/GFSNeohellenic-Bold.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/GFSNeohellenic-Bold.ttf') format('truetype');
+	/**/
 }
 @font-face {
 	font-family: 'GFS Neohellenic';
 	font-style: italic;
 	font-weight: 700;
 	font-display: swap;
+	/**/
 	src: url('fonts/GFSNeohellenic-BoldItalic.ttf') format('truetype');
+	/**/
 	/*
-	src: url('../fonts/GFSNeohellenic-BoldItalic.ttf') format('truetype');
-	*/
+	src: url('../static/fonts/GFSNeohellenic-BoldItalic.ttf') format('truetype');
+	/**/
 }
 
 
@@ -348,13 +372,13 @@ input[type=radio]:checked:after {
 	background-color: rgb(90, 110, 130);
 	width: 100%;
 }
-#part_1 input[type=text] {
+#map_input_text_upload {
 	font-size: 18px;
 	font-family: 'GFS Neohellenic';
 	width: calc(100% - 20px);
 	padding: 5px 10px;
 }
-#part_2 input[type=text] {
+.part_1_text, #part_2 input[type=text] {
 	font-size: 16px;
 	font-family: 'GFS Neohellenic';
 	width: 50px;
@@ -363,6 +387,9 @@ input[type=radio]:checked:after {
 	background-color: rgb(80, 80, 80);
 	border: none;
 	border-radius: 5px;
+}
+.part_1_text {
+	width: 75px;
 }
 input[type=number] {
 	font-size: 18px;
@@ -451,9 +478,37 @@ label, .caption {
 	box-shadow: 0px 0px 10px rgba(60, 60, 60, 0.5);;
 }
 .colour_3:active {
+	color: rgb(200, 200, 200);
 	background-color: rgb(60, 60, 60);
 	transition: 0s !important;
 }
+.mask {
+	background-color: rgb(70, 70, 70) !important;
+	color: rgb(170, 170, 170) !important;
+	padding: 1px 0px !important;
+	border-radius: 5px;
+	font-size: 16px !important;
+}
+#no_mask { width: calc(25% - 5px); }
+#land_mask { width: calc(35% - 5px); }
+#water_mask { width: calc(40% - 5px); }
+
+.mask:hover {
+	background-color: rgb(100, 100, 100) !important;
+	box-shadow: none !important;
+}
+.mask:active {
+	background-color: rgb(200, 200, 255) !important;
+	color: rgb(50, 50, 100) !important;
+	transition: 0s;
+	box-shadow: none !important;
+}
+.mask_active, .mask_active:hover, .mask_active:active {
+	background-color: rgb(120, 120, 222) !important;
+	color: white !important;
+	box-shadow: none !important;
+}
+
 .unselectable {
 	color: rgb(30, 30, 30) !important;
 	cursor: not-allowed !important;
@@ -481,6 +536,7 @@ label, .caption {
 	box-shadow: 0px 0px 10px rgba(50, 150, 240, 0.5);
 }
 .colour_1:active {
+	color: rgb(255, 255, 255);
 	background-color: rgb(70, 100, 130);
 	transition: 0s !important;
 }
@@ -520,6 +576,7 @@ label, .caption {
 	box-shadow: 0px 0px 10px rgb(190, 105, 85, 0.5) !important;
 }
 .colour_2:active {
+	color: white !important;
 	background-color: rgb(120, 80, 70) !important;
 	transition: 0s !important;
 }
@@ -721,6 +778,35 @@ label, .caption {
 	font-family: 'GFS Neohellenic';
 	font-size: 18px;
 	white-space: nowrap;
+}
+#colour_bar_block {
+	width: 30px;
+	height: var(--block_height);
+	right: calc(var(--sidebar_width) + 60px);
+	position: absolute;
+	bottom: 50px;
+	z-index: -5;
+	opacity: 0;
+	transition: 0.2s;
+}
+#colour_bar_block p {
+	position: absolute;
+	font-family: 'GFS Neohellenic';
+	font-size: 12px;
+	color: white;
+	text-align: center;
+	left: 0;
+	right: 0;
+	margin: auto;
+	text-shadow: 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black,
+				0px 1px black, 0px -1px black, 1px 0px black, -1px 0px black,
+				0.5px 0.5px black, -0.5px -0.5px black, 0.5px -0.5px black, -0.5px 0.5px black,
+				0px 0.5px black, 0px -0.5px black, 0.5px 0px black, -0.5px 0px black;
+}
+#colour_bar_canvas, #colour_bar_text {
+	width: 100%;
+	height: 100%;
+	position: absolute;
 }
 #map_canvas {
 	width: var(--map_width);
