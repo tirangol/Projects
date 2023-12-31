@@ -1,12 +1,12 @@
 # Climate Net
 
-A work-in-progress app that uses a neural network to predict the climate of Earth-like planets, intended as a fast & high-resolution worldbuilding tool for generating realistic climates. Earth-like in this context means matching modern-era Earth in every property except for the elevation map.
+A work-in-progress app that uses a neural network with skip connections and convolutional inputs to predict the climate of Earth-like planets, intended as a fast & high-resolution worldbuilding tool for generating realistic climates. Earth-like in this context means matching modern-era Earth in every property except for the elevation map.
 
-The model is very naive - it only considers elevation and the land/water boundary, ignoring other factors like vegetation, the chemical makeup of the atmosphere, or the ocean bathymetry.
-
-It supports inputs in the form of images (.png, .jpg, .tif), text (eg. `[[1, 2, 3], [4, 5, 6]]`), or randomly generated terrain, and contains a editor that can perform limited elevation-editing operations.
+This tool supports an equirectangular elevation map as input, which can be in the form of images (.png, .jpg, .tif), text (eg. `[[1, 2, 3], [4, 5, 6]]`), or randomly generated terrain. It also has a built-in elevation editor that can perform limited operations.
 
 Outputs come in the form of monthly temperature, monthly precipitation, and climate classification maps (currently supports Koppen and Trewartha).
+
+The model is very naive - it only considers elevation and the land/water boundary, ignoring other inputs like vegetation, the chemical makeup of the atmosphere, or the ocean bathymetry. This is probably for the best, as 1) there's no easy-to-find data for this, 2) I'm not a geophysicist or geochemist, and 3) I doubt most worldbuilders would have this data anyways. Also, climate isn't a simple input/output system as modelled here - climate influences terrain/vegetation/atmsophere, which in turn affect the climate. Real simulations will simulate Earth over a long period of time, and average the data over a stable period.
 
 Python was used for the machine learning component - Pillow, Scipy and Numpy for the data processing, Pytorch for the neural network and training process, and Flask for the web part. HTML, CSS, and Javascript were used to build the website as well as the editor. I'm using additional Javascript libraries to handle TIF images as well as image uploading/exporting.
 
@@ -37,6 +37,8 @@ There are a lot of things I'm still not satisfied with and trying to implement/i
 The webpage has only been tested in Chrome and Edge on Windows. If something doesn't display right... welp.
 
 ## Data
+
+The training data consisted of normal Earth climate data and a simulation of retrograde Earth's climate data. Due to the problem domain, there are only two elevation maps (ie. data points), so there is not much point in measuring "error". So, don't blindly trust the model. Treat it as half-scientific, half-artistic.
 
 The temperature/precipitation data originated from https://www.worldclim.org/data/worldclim21.html (data from 1970 to 2000)
 
