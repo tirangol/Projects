@@ -22,8 +22,9 @@ Python was used for the machine learning component - Pillow, Scipy and Numpy for
 <img src="gifs/part 3.gif" width="1000px">
 </p>
 
-There are a lot of things I'm still not satisfied with and am working on, such as:
+There are a lot of things I'm still not satisfied with and trying to implement/improve, such as:
 
+- Fixing how the model outputs noisy, unsmooth, and unrealistic predictions
 - Optimizing the preprocessing speed (which is far too slow)
 - GIF, PNG, and text exporting of results
 - More colour schemes for results
