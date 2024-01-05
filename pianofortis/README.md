@@ -15,3 +15,8 @@ Below are some predictions on a piano arrangement of Rachmaninoff's first Sympho
 <p align="center">
 <img src="screenshots/2.png" width="900"/>
 </p>
+
+<p align="center">
+<img src="screenshots/3.png" width="900"/>
+</p>
+
