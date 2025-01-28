@@ -1,5 +1,7 @@
 # Climate Net
 
+**NOTE:** This is the 2023 version of Climate Net. There is a new version [here](https://github.com/tirangol/Climate-Net).
+
 A work-in-progress app that uses a neural network with skip connections and convolutional inputs to predict the climate of Earth-like planets, intended as a fast & high-resolution worldbuilding tool for generating realistic climates. Earth-like in this context means matching modern-era Earth in every property except for the elevation map.
 
 This tool supports an equirectangular elevation map as input, which can be in the form of images (.png, .jpg, .tif), text (eg. `[[1, 2, 3], [4, 5, 6]]`), or randomly generated terrain. It also has a built-in elevation editor that can perform limited operations.
