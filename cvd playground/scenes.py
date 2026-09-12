@@ -259,31 +259,55 @@ def generate_useful_rgb_confusion_line(cvd_type: str) -> tuple[NDArray, NDArray,
     return rgb, start, end
 
 
+def saturation(rgb: NDArray) -> float:
+    max = np.max(rgb)
+    min = np.min(rgb)
+    return (max - min) / max
+
+
 def generate_useful_confusion_line_variants(distractors: list[NDArray]) -> list[list[NDArray]]:
     lines = []
-    width = 1
     for rgb in distractors:
+        sat0 = saturation(rgb)
+        oklab0 = rgb_to_oklab(rgb)
         candidates = []
-        for _ in range(5):
+        done = 0
+        while done < 5:
             e = np.array([np.random.rand(), np.random.rand(), 0])
             start, end = confusion_line_custom(rgb, e)
-            start_rgb = lms_to_rgb(start)
-            end_rgb = lms_to_rgb(end)
-            timestep = (rgb - start_rgb) / (end_rgb - start_rgb)
-            timestep[~np.isfinite(timestep)] = np.nan
-            timestep = np.nanmin(timestep)
+            start_rgb, end_rgb = lms_to_rgb(start), lms_to_rgb(end)
 
-            if timestep > 1 - width / 2:
-                start_timestep, end_timestep = 1 - width, 1
-            elif timestep < width / 2:
-                start_timestep, end_timestep = 0, width
-            else:
-                start_timestep, end_timestep = timestep - width / 2, timestep + width / 2
+            i = 0
+            c = start_rgb * (1 - i) + end_rgb * i
+            oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
+            while oklab_diff > 0.15:
+                i += 0.05
+                c = start_rgb * (1 - i) + end_rgb * i
+                oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
+                if i > 1:
+                    break
+            if i > 1:
+                continue
+            print(f'FROM {np.round(c * 255)}, {oklab_diff}')
 
-            new_start = start * (1 - start_timestep) + end * start_timestep
-            new_end = start * (1 - end_timestep) + end * end_timestep
+            j = 1
+            c = start_rgb * (1 - j) + end_rgb * j
+            oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
+            while oklab_diff > 0.15:
+                j -= 0.05
+                c = start_rgb * (1 - j) + end_rgb * j
+                oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
+                if j < 0:
+                    break
+            if j < 0:
+                continue
+            print(f'TO {np.round(c * 255)}, {oklab_diff}')
+
+            new_start = start * (1 - i) + end * i
+            new_end = start * (1 - j) + end * j
 
             candidates.append([new_start, new_end])
+            done += 1
         lines.append(candidates)
     return lines
 
