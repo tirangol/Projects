@@ -268,7 +268,6 @@ def saturation(rgb: NDArray) -> float:
 def generate_useful_confusion_line_variants(distractors: list[NDArray]) -> list[list[NDArray]]:
     lines = []
     for rgb in distractors:
-        sat0 = saturation(rgb)
         oklab0 = rgb_to_oklab(rgb)
         candidates = []
         done = 0
@@ -280,7 +279,7 @@ def generate_useful_confusion_line_variants(distractors: list[NDArray]) -> list[
             i = 0
             c = start_rgb * (1 - i) + end_rgb * i
             oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
-            while oklab_diff > 0.15:
+            while oklab_diff > 0.25 or oklab_diff < 0.1:
                 i += 0.05
                 c = start_rgb * (1 - i) + end_rgb * i
                 oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
@@ -293,7 +292,7 @@ def generate_useful_confusion_line_variants(distractors: list[NDArray]) -> list[
             j = 1
             c = start_rgb * (1 - j) + end_rgb * j
             oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
-            while oklab_diff > 0.15:
+            while oklab_diff > 0.25 or oklab_diff < 0.1:
                 j -= 0.05
                 c = start_rgb * (1 - j) + end_rgb * j
                 oklab_diff = np.sum((rgb_to_oklab(c) - oklab0) ** 2) ** 0.5
@@ -327,13 +326,13 @@ def generate_ishihara(text: str, cvd_type: str, output_path: str = 'test.svg', m
         xx = np.clip(int(x * mask_size), 0, mask_size - 1)
         yy = np.clip(int(y * mask_size), 0, mask_size - 1)
 
-        t = np.random.rand()
         if mask[yy, xx]:
+            t = (np.random.beta(4, 4) + 0.5) % 1
             rgb = lms_to_rgb(start * t + end * (1 - t))
             rgb = np.clip(rgb * (np.random.rand(3) * 0.2 + 0.9), 0, 1)
         else:
             new_start, new_end = lines[np.random.randint(0, len(lines))][np.random.randint(0, len(lines[0]))]
-            t = np.random.rand()
+            t = (np.random.beta(4, 4) + 0.5) % 1
             rgb = lms_to_rgb(new_start * t + new_end * (1 - t))
         r, g, b = np.clip(np.floor(rgb * 256).astype(int), 0, 255)
         return f'rgb({r}, {g}, {b})'
@@ -364,7 +363,8 @@ def draw_ishihara(colour_func: Callable, output_path: str = 'test.svg', input_pa
 
 def generate_ishihara_set(n: int = 20, dir: str = 'ishihara') -> None:
     for i in range(n):
-        char = chr(np.random.randint(65, 91)) if np.random.rand() > 0.5 else str(np.random.randint(0, 10))
+        char = chr(np.random.randint(65, 91))
+        # char = str(np.random.randint(0, 10))
         generate_ishihara(char, 'd', f'{dir}/{i}_{char}.svg')
 
 
@@ -386,5 +386,3 @@ def playground() -> None:
     generate_grid_inverse(mask, 'd')
 
     generate_ishihara(str(np.random.randint(0, 10)), 'd')
-
-# TODO: constrain with saturation + oklab (for-real, none of this timestep BS)
